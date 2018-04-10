@@ -1,5 +1,6 @@
 from sklearn.mixture import GaussianMixture
 from pathlib import Path
+import matplotlib.pyplot as plt
 
 def get_features(line,set_):
     list_ = line.split("	")
@@ -26,3 +27,5 @@ gm.fit(X = train)
 ar = gm.predict(X=test)
 print(ar)
 print("Size: {}".format(len(ar)))
+plt.figure(figsize=(12,12))
+plt.scatter(test)
