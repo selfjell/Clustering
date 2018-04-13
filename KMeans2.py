@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
+import sklearn.preprocessing as pp
 from sklearn.decomposition import PCA
 
 
@@ -53,8 +53,11 @@ def elbow_variant2(X, nClusters):
     return distorsions
 
 
-def scale_data(X):
-    X_scaled = StandardScaler().fit_transform(X)
+def scale_data(X, type_):
+    #X_scaled = pp.StandardScaler().fit_transform(X)
+    #X_scaled = pp.RobustScaler().fit_transform(X)
+    X_scaled = pp.MinMaxScaler().fit_transform(X)
+    #X_scaled = pp.Normalizer().fit_transform(X)
     return X_scaled
 
 
@@ -94,6 +97,8 @@ def test_kmeans(kmeans, testCluster):
     print(kmeans_labels)
     print(testCluster)
 
+
+
     for labelX, labelY in zip(kmeans_labels, testCluster):
         if labelX == labelY:
             score += 1
@@ -104,19 +109,32 @@ def test_kmeans(kmeans, testCluster):
 
 
 
-def run_everything():
+def run_everything(type_, ordered, seed):
     clean_text_file()
     X, testCluster = create_dataset()
     elbow_function(X)
-    X_Scaled = scale_data(X)
-    X_pca = reduce_to_two_components(X_Scaled)
+
+    if not ordered:
+        X_Scaled = scale_data(X, type_)
+        X_pca = reduce_to_two_components(X_Scaled)
+    else:
+        X_pca = reduce_to_two_components(X)
+        X_Scaled = scale_data(X_pca, type_)
+        X_pca = X_Scaled
+
+
+
     elbow_function(X_pca)
     kmeans = make_kmeans(X_pca)
     kmeans_X = make_kmeans(X)
     plot_to_screen(kmeans, X_pca)
 
-    # At first glance it looks like kmeans with X_pca comes better out than kmeans with X.
+    # With 2 dimensions
+    np.random.seed(seed)
     test_kmeans(kmeans, testCluster)
+
+    # With 7 dimensions, (might need a different seed)
+    np.random.seed(seed)
     test_kmeans(kmeans_X, testCluster)
 
 
