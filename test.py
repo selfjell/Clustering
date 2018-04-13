@@ -7,34 +7,60 @@ from sklearn import decomposition
 from sklearn.mixture import GaussianMixture
 from sklearn import preprocessing
 
-data = np.genfromtxt('seeds_dataset.txt', usecols=range(7))
-labels = np.genfromtxt('seeds_dataset.txt', usecols=7)
-
-
-np.random.seed(18)
-
-
 ## DIMENSIONALITY REDUCTION (PCA) ##
-pca = decomposition.PCA(n_components=2, )
-pca.fit(data)
-data_red = pca.transform(data)
-
+def reduce(data):
+    pca = decomposition.PCA(n_components=2, )
+    pca.fit(data)
+    return pca.transform(data), pca
 
 ## SCALING ##
-#scaler = preprocessing.StandardScaler().fit(data_red)
-#scaler = preprocessing.Normalizer().fit(data_red)
-scaler = preprocessing.MinMaxScaler().fit(data_red) #best score
-#scaler = preprocessing.RobustScaler().fit(data_red)
-data_red = scaler.transform(data_red)
+def scale(scaling, data_red):
+    scaler = None
+    if scaling == 'standard':
+        scaler = preprocessing.StandardScaler().fit(data_red)
+    elif scaling == 'norm':
+        scaler = preprocessing.Normalizer().fit(data_red)
+    elif scaling == 'minmax':
+        scaler = preprocessing.MinMaxScaler().fit(data_red) #best score
+    elif scaling == 'robust':
+        scaler = preprocessing.RobustScaler().fit(data_red)
+    else:
+        print("illegal argument")
+    return scaler
 
 
-## GAUSSIAN MIXTURE ##
-gmm = GaussianMixture(n_components=3, covariance_type='tied')
-gmm.fit(data_red)
+def run(plotting_, covar, ordered, scaling, seed = 18):
+    data = np.genfromtxt('seeds_dataset.txt', usecols=range(7))
+    labels = np.genfromtxt('seeds_dataset.txt', usecols=7)
+
+
+    np.random.seed(seed)
+
+
+    if ordered:
+        data_red, pca = reduce(data)
+
+        scaler = scale(scaling, data_red)
+        data_red = scaler.transform(data_red)
+    else:
+        scaler = scale(scaling, data)
+        data_temp = scaler.transform(data)
+
+        data_red, pca = reduce(data_temp)
+
+    ## GAUSSIAN MIXTURE ##
+    gmm = GaussianMixture(n_components=3, covariance_type=covar)
+    gmm.fit(data_red)
+
+    if plotting_:
+        plotting(gmm,data,ordered,pca,labels,scaler)
+
+    lab = gmm.predict(data_red)
+    test_gmm(lab,labels)
 
 
 ## PLOT ##
-def plotting(gmm,data):
+def plotting(gmm,data,ordered,pca,labels,scaler):
     colors = ['cyan', 'green', 'red']
 
     for n, color in enumerate(colors):
@@ -52,13 +78,17 @@ def plotting(gmm,data):
         ell.set_alpha(0.3)
         sub.add_artist(ell)
         ## ------------------------------
-        temp_data = pca.transform(data[labels==n+1])
-        temp_data = scaler.transform(temp_data)
+        if ordered:
+            temp_data = pca.transform(data[labels==n+1])
+            temp_data = scaler.transform(temp_data)
+        else:
+            temp_data = scaler.transform(data[labels==n+1])
+            temp_data = pca.transform(temp_data)
         plt.scatter(temp_data[:, 0], temp_data[:, 1], color=color)
 
     plt.show()
 
-#plotting(gmm,data)
+
 
 def test_gmm(gmm_labels, testCluster):
     lab = []
@@ -76,6 +106,3 @@ def test_gmm(gmm_labels, testCluster):
     # Percentage right given that the starting random seed corresponds to kmeans clustering groups
     score = (score / len(testCluster)) * 100
     print(score, '%')
-
-lab = gmm.predict(data_red)
-test_gmm(lab,labels)
