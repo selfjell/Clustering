@@ -54,10 +54,16 @@ def elbow_variant2(X, nClusters):
 
 
 def scale_data(X, type_):
-    #X_scaled = pp.StandardScaler().fit_transform(X)
-    #X_scaled = pp.RobustScaler().fit_transform(X)
-    X_scaled = pp.MinMaxScaler().fit_transform(X)
-    #X_scaled = pp.Normalizer().fit_transform(X)
+    if type_ == "standard":
+        X_scaled = pp.StandardScaler().fit_transform(X)
+    elif type_ == "robust":
+        X_scaled = pp.RobustScaler().fit_transform(X)
+    elif type_ == "minmax":
+        X_scaled = pp.MinMaxScaler().fit_transform(X)
+    elif type_ == "norm":
+        X_scaled = pp.Normalizer().fit_transform(X)
+    else:
+        print("Illegal argument (scaling type)")
     return X_scaled
 
 
@@ -138,4 +144,4 @@ def run_everything(type_, ordered, seed):
     test_kmeans(kmeans_X, testCluster)
 
 
-run_everything()
+run_everything("norm",True,18)
