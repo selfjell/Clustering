@@ -13,6 +13,7 @@ def clean_text_file():
             s.write(" ".join(line.split()) + "\n")
 
 
+# This could be prettier
 def create_dataset():
     df = pd.read_csv('seeds_dataset_CLEANED.csv', sep=' ', header=None,
                      names=["f1", "f2", "f3", "f4", "f5", "f6", "f7", "type"])
@@ -29,6 +30,8 @@ def create_dataset():
     return X, for_review
 
 
+# Used for finding out how many clusters are optimal for a given dataset (X)
+# The optimal number of clusters is the point on the x-axis were the graph cuts off like an elbow
 def elbow_function(X):
     nClusters = range(1, 15)
     score = elbow_variant1(X, nClusters)
@@ -142,6 +145,7 @@ def run_everything(type_, ordered, seed):
 
 # NEW methods for better testing!
 
+# Tests how many of kmeans.labels_ are identical to the test-labels/ground-truth-labels from the dataset (testCluster)
 def test_kmeans2(kmeans, testCluster):
     score = 0
     for labelX, labelY in zip(kmeans.labels_, testCluster):
@@ -151,20 +155,20 @@ def test_kmeans2(kmeans, testCluster):
     return score
 
 
+# Scales data, makes kmean and returns the score for that kmean with test_kmeans2
 def run_everything2(scaler, seed, pca, ordered):
     clean_text_file()
     X, testCluster = create_dataset()
+    X_Scaled = scale_data(X, scaler)
     if ordered:
-        X_Scaled = scale_data(X, scaler)
         X_pca = reduce_to_two_components(X_Scaled)
     else:
         X_pca = reduce_to_two_components(X)
-        X_Scaled = scale_data(X_pca, scaler)
-        X_pca = X_Scaled
+        X_pca = scale_data(X_pca, scaler)
 
+    np.random.seed(seed)
     if pca:
         kmeans = make_kmeans(X_pca)
     else:
-        kmeans = make_kmeans(X)
-    np.random.seed(seed)
+        kmeans = make_kmeans(X_Scaled)
     return test_kmeans2(kmeans, testCluster)

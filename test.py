@@ -106,3 +106,44 @@ def test_gmm(gmm_labels, testCluster):
     # Percentage right given that the starting random seed corresponds to kmeans clustering groups
     score = (score / len(testCluster)) * 100
     print(score, '%')
+
+
+# New methods for SUPER_TEST
+def run2(scaler, seed, pca, ordered, gm_type):
+    data = np.genfromtxt('seeds_dataset.txt', usecols=range(7))
+    labels_dataset = np.genfromtxt('seeds_dataset.txt', usecols=7)
+
+    X_scaled = scale(scaler, data).transform(data)
+    if ordered:
+        X_pca, unused = reduce(X_scaled)
+    else:
+        reduced_data, unused2 = reduce(data)
+        X_pca = scale(scaler, reduced_data).transform(reduced_data)
+
+    np.random.seed(seed)
+    if pca:
+        gmm = GaussianMixture(n_components=3, covariance_type=gm_type)
+        gmm.fit(X_pca)
+        labels_gmm = gmm.predict(X_pca)
+    else:
+        gmm = GaussianMixture(n_components=3, covariance_type=gm_type)
+        gmm.fit(X_scaled)
+        labels_gmm = gmm.predict(X_scaled)
+
+    return test_gmm2(labels_gmm, labels_dataset)
+
+
+def test_gmm2(labels_gmm, labels_dataset):
+    lab = []
+    for label in labels_dataset:
+        lab.append(label-1)
+    score = 0
+    labels_dataset = lab
+
+    for labelX, labelY in zip(labels_gmm, labels_dataset):
+        if labelX == labelY:
+            score += 1
+
+    # Percentage right given that the starting random seed corresponds to kmeans clustering groups
+    score = (score / len(labels_dataset)) * 100
+    return score
