@@ -1,6 +1,7 @@
 import KMeans3 as km
 import test as gm
 
+#gittest
 gm.run(True,'spherical',False,'norm')
 gm.run(True,'tied',False,'norm')
 gm.run(True,'full',False,'norm')
