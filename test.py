@@ -56,7 +56,7 @@ def run(plotting_, covar, ordered, scaling, seed = 18):
         plotting(gmm,data,ordered,pca,labels,scaler)
 
     lab = gmm.predict(data_red)
-    test_gmm(lab,labels)
+    test_gmm2(lab,labels)
 
 
 ## PLOT ##
@@ -68,7 +68,15 @@ def plotting(gmm,data,ordered,pca,labels,scaler):
         ## elipses on using iris data set
         ## ------------------------------
         sub = plt.subplot(111)
-        v, w = np.linalg.eigh(gmm.covariances_[n][:2, :2])
+        if gmm.covariance_type == 'full':
+            covariances = gmm.covariances_[n][:2, :2]
+        elif gmm.covariance_type == 'tied':
+            covariances = gmm.covariances_[:2, :2]
+        elif gmm.covariance_type == 'diag':
+            covariances = np.diag(gmm.covariances_[n][:2])
+        elif gmm.covariance_type == 'spherical':
+            covariances = np.eye(gmm.means_.shape[1]) * gmm.covariances_[n]
+        v, w = np.linalg.eigh(covariances)
         u = w[0] / np.linalg.norm(w[0])
         angle = np.arctan2(u[1], u[0])
         angle = 180 * angle / np.pi  # convert to degrees
