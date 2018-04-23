@@ -12,3 +12,6 @@ km.run_everything("robust",True,18)
 km.run_everything("standard",True,18)
 km.run_everything("norm",True,18)
 """
+
+# False = scale_first
+km.run_everything("norm", False, 16)

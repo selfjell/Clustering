@@ -5,7 +5,7 @@ import test as gm
 scaler_list = ['minmax', 'robust', 'standard', 'norm']
 ordered_list = [True, False]
 seed_list = range(50)
-pca_list = [True, False]
+pca_list = [True] # add False if with 7 components also
 km_results = []
 gm_results = []
 gm_covar_list = ['full', 'tied', 'diag', 'spherical']
@@ -16,9 +16,9 @@ def write_scores(results, km_or_gm):
 
     # argument km_or_gm decides which file to write to
     if km_or_gm == 'km':
-        file = open("SUPER_TEST_KMEANS.txt", "w+")
+        file = open("SUPER_TEST_KMEANS_Only2comp.txt", "w+")
     else:
-        file = open("SUPER_TEST_GM.txt", "w+")
+        file = open("SUPER_TEST_GM.txt_Only2comp.txt", "w+")
 
     file.write(km_or_gm + ' - SUPER_TEST')
     file.write('\n')
@@ -54,8 +54,8 @@ def test_scaler(scaler):
 
     # Main loop for "brute-forcing" to a good score with the scaler
     for seed in seed_list:
-        for pca in True, False:
-            for ordered in True, False:
+        for pca in pca_list:
+            for ordered in ordered_list:
 
                 # The score (given arguments) from a method in KMeans3.py
                 score = km.run_everything2(scaler, seed, pca, ordered)

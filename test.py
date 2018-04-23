@@ -56,7 +56,7 @@ def run(plotting_, covar, ordered, scaling, seed = 18):
         plotting(gmm,data,ordered,pca,labels,scaler)
 
     lab = gmm.predict(data_red)
-    test_gmm2(lab,labels)
+    print(test_gmm2(lab,labels))
 
 
 ## PLOT ##
