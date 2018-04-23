@@ -29,10 +29,9 @@ def scale(scaling, data_red):
     return scaler
 
 
-def run(plotting_, covar, ordered, scaling, seed = 18):
+def run(plotting_, covar, ordered, scaling, seed = 18, index = 1, n_estimators = 1):
     data = np.genfromtxt('seeds_dataset.txt', usecols=range(7))
     labels = np.genfromtxt('seeds_dataset.txt', usecols=7)
-
 
     np.random.seed(seed)
 
@@ -53,21 +52,26 @@ def run(plotting_, covar, ordered, scaling, seed = 18):
     gmm.fit(data_red)
 
     if plotting_:
-        plotting(gmm,data,ordered,pca,labels,scaler)
+        plotting(gmm,data,ordered,pca,labels,scaler, index = index, n_estimators = n_estimators)
 
     lab = gmm.predict(data_red)
     print(test_gmm2(lab,labels))
 
 
 ## PLOT ##
-def plotting(gmm,data,ordered,pca,labels,scaler):
+def plotting(gmm,data,ordered,pca,labels,scaler, index = 1, n_estimators = 1):
     colors = ['cyan', 'green', 'red']
+
+    if n_estimators==1:
+        sub = plt.subplot(111)
+    else:
+        sub = plt.subplot(2, n_estimators // 2, index + 1)
 
     for n, color in enumerate(colors):
         ## Code mostly from scikit's examples drawing
         ## elipses on using iris data set
         ## ------------------------------
-        sub = plt.subplot(111)
+
         if gmm.covariance_type == 'full':
             covariances = gmm.covariances_[n][:2, :2]
         elif gmm.covariance_type == 'tied':
@@ -94,7 +98,7 @@ def plotting(gmm,data,ordered,pca,labels,scaler):
             temp_data = pca.transform(temp_data)
         plt.scatter(temp_data[:, 0], temp_data[:, 1], color=color)
 
-    plt.show()
+    #plt.show()
 
 
 
