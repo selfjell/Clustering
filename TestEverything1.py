@@ -1,14 +1,25 @@
-import KMeans3 as km
+import KMeans4 as km
 import test as gm
 
 # Global lists
 scaler_list = ['minmax', 'robust', 'standard', 'norm']
 ordered_list = [True, False]
-seed_list = range(50)
-pca_list = [True] # add False if with 7 components also
+# If test with comp 2-7 (files_names_2range_7comp), then range 30 is as good as 100 based on previous test
+seed_list = range(30)
+
+# [True, False] = 7and2comp
+# [True] = 2comp_only
+pca_list = [True]
+
+# for testing with all comps
+pca_list2 = [2, 3, 4, 5, 6, 7]
+
 km_results = []
 gm_results = []
 gm_covar_list = ['full', 'tied', 'diag', 'spherical']
+file_names_7and2comp = ["SUPER_TEST_KMEANS.txt", "SUPER_TEST_GM.txt"]
+file_names_2comp = ["SUPER_TEST_KMEANS_Only2comp.txt", "SUPER_TEST_GM_Only2comp.txt"]
+file_names_2range7comp = ["SUPER_TEST_KMEANS_ALLcomp.txt", "SUPER_TEST_GM_ALLcomp.txt"]
 
 
 # writes scores to a txt file.
@@ -16,9 +27,9 @@ def write_scores(results, km_or_gm):
 
     # argument km_or_gm decides which file to write to
     if km_or_gm == 'km':
-        file = open("SUPER_TEST_KMEANS_Only2comp.txt", "w+")
+        file = open(file_names_2range7comp[0], "w+")
     else:
-        file = open("SUPER_TEST_GM.txt_Only2comp.txt", "w+")
+        file = open(file_names_2range7comp[1], "w+")
 
     file.write(km_or_gm + ' - SUPER_TEST')
     file.write('\n')
@@ -54,27 +65,32 @@ def test_scaler(scaler):
 
     # Main loop for "brute-forcing" to a good score with the scaler
     for seed in seed_list:
-        for pca in pca_list:
+        for pca in pca_list2:
             for ordered in ordered_list:
 
                 # The score (given arguments) from a method in KMeans3.py
-                score = km.run_everything2(scaler, seed, pca, ordered)
+                score = km.run_everything3(scaler, seed, pca, ordered)
 
                 gm_scores = []
                 for gm_type in gm_covar_list:
                     # The score (given arguments and covar_list) from a method in test.py
-                    score2 = gm.run2(scaler, seed, pca, ordered, gm_type)
+                    score2 = gm.run3(scaler, seed, pca, ordered, gm_type)
                     gm_scores.append(score2)
 
+
+
                 # Translating booleans to strings for easier reading in the file
-                if pca:
-                    pca_string = '2_components'
-                else:
-                    pca_string = '7_components'
+                pca_string = str(pca) + '_components'
+                #if pca:
+                #    pca_string = '2_components'
+                #else:
+                #    pca_string = '7_components'
+
                 if ordered:
                     ordered_string = 'scale_first'
                 else:
                     ordered_string = 'scale_after'
+
 
                 # Makes an entry in km_info_list containing all the arguments that were used to obtain the score
                 km_info_list.append('%s, %s, %s, %s %s' % (seed, pca_string, ordered_string, score, '\n'))

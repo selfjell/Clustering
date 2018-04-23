@@ -159,3 +159,27 @@ def test_gmm2(labels_gmm, labels_dataset):
     # Percentage right given that the starting random seed corresponds to kmeans clustering groups
     score = (score / len(labels_dataset)) * 100
     return score
+
+
+# new methods for in the "KMeans4-patch" that tests gmm with "n" components from 2-7 testing with TestEverything
+def run3(scaler, seed, pca, ordered, gm_type):
+    data = np.genfromtxt('seeds_dataset.txt', usecols=range(7))
+    labels_dataset = np.genfromtxt('seeds_dataset.txt', usecols=7)
+
+    X_scaled = scale(scaler, data).transform(data)
+    if ordered:
+        X_pca = reduce2(X_scaled, pca)
+    else:
+        reduced_data = reduce2(data, pca)
+        X_pca = scale(scaler, reduced_data).transform(reduced_data)
+
+    np.random.seed(seed)
+    gmm = GaussianMixture(n_components=3, covariance_type=gm_type)
+    gmm.fit(X_pca)
+    labels_gmm = gmm.predict(X_pca)
+    return test_gmm2(labels_gmm, labels_dataset)
+
+
+def reduce2(data, n_components):
+    pca = decomposition.PCA(n_components=n_components, )
+    return pca.fit_transform(data)
