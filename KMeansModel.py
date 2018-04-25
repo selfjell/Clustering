@@ -47,7 +47,7 @@ class KMeansModel():
             self.processed_data = pp.RobustScaler().fit_transform(self.processed_data)
         elif scaling_type == "minmax":
             self.processed_data = pp.MinMaxScaler().fit_transform(self.processed_data)
-        elif scaling_type == "norm":
+        elif scaling_type == "normalizer":
             self.processed_data = pp.Normalizer().fit_transform(self.processed_data)
         else:
             print("Illegal argument (scaling type)")

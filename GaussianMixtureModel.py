@@ -49,7 +49,7 @@ class GaussianMixtureModel():
             elif self.model.covariance_type == 'diag':
                 covariances = np.diag(self.model.covariances_[n][:2])
             elif self.model.covariance_type == 'spherical':
-                covariances = np.eye(self.model.means_.shape[1]) * gmm.covariances_[n]
+                covariances = np.eye(self.model.means_.shape[1]) * self.model.covariances_[n]
             v, w = np.linalg.eigh(covariances)
             u = w[0] / np.linalg.norm(w[0])
             angle = np.arctan2(u[1], u[0])
