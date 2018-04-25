@@ -72,8 +72,8 @@ class KMeansModel():
         plt.scatter(x, y, c=cluster)
         for i, j in centers:
             plt.scatter(i, j, c='red', marker='*')
-        plt.set_xlabel('x')
-        plt.set_ylabel('y')
+        plt.xlabel('x')
+        plt.ylabel('y')
 
     def fit(self, model_components):
         self.model = KMeans(n_clusters = model_components)
@@ -96,7 +96,7 @@ class KMeansModel():
         if plot: self.plot(subplot_ = subplot_)
 
         if test:
-            score = self.test_kmeans(kmeans)
+            score = self.test_kmeans()
             print("Score: {}%".format(score))
 
     # Tests how many of kmeans.labels_ are identical to the test-labels/ground-truth-labels from the dataset (testCluster)

@@ -12,10 +12,10 @@ labels = np.genfromtxt('seeds_dataset.txt', usecols=7)
 
 ## MODEL INSTANTIATION ##
 GMM = GaussianMixtureModel(data, labels)
-GMM.run()
+GMM.run(subplot_ = plt.subplot(2, 1, 1))
 
-KM = KMeansModel(data,labels)
-KM.run()
+KM = KMeansModel(data, labels)
+KM.run(subplot_ = plt.subplot(2, 1, 2))
 
 ## SHOW PLOT ##
 plt.show()

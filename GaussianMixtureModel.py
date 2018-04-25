@@ -90,7 +90,7 @@ class GaussianMixtureModel():
                 score += 1
         # Percentage right given that the starting random seed corresponds to kmeans clustering groups
         score = (score / len(self.labels)) * 100
-        print(score)
+        print("Score: {}%".format(score))
         return score
 
     def reset(self):
