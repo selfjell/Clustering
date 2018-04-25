@@ -1,4 +1,5 @@
 from GaussianMixtureModel import GaussianMixtureModel
+from KMeansModel import KMeansModel
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,6 +13,9 @@ labels = np.genfromtxt('seeds_dataset.txt', usecols=7)
 ## MODEL INSTANTIATION ##
 GMM = GaussianMixtureModel(data, labels)
 GMM.run()
+
+KM = KMeansModel(data,labels)
+KM.run()
 
 ## SHOW PLOT ##
 plt.show()
