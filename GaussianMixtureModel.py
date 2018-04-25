@@ -83,13 +83,13 @@ class GaussianMixtureModel():
         temp_labels = []
         for label in self.labels:
             temp_labels.append(label-1)
-        self.labels = temp_labels
+        labels = temp_labels
         score = 0
-        for labelX, labelY in zip(self.model.predict(self.processed_data), self.labels):
+        for labelX, labelY in zip(self.model.predict(self.processed_data), labels):
             if labelX == labelY:
                 score += 1
         # Percentage right given that the starting random seed corresponds to kmeans clustering groups
-        score = (score / len(self.labels)) * 100
+        score = (score / len(labels)) * 100
         print("Score: {}%".format(score))
         return score
 

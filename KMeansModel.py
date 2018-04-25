@@ -68,7 +68,6 @@ class KMeansModel():
 
         cluster = self.model.labels_
         centers = self.model.cluster_centers_
-
         plt.scatter(x, y, c=cluster)
         for i, j in centers:
             plt.scatter(i, j, c='red', marker='*')
