@@ -9,6 +9,7 @@ gm.run(True,'tied',False,'norm', index = 1, n_estimators = n_estimators)
 gm.run(True,'full',False,'norm', index = 2, n_estimators = n_estimators)
 gm.run(True,'diag',False,'norm', index = 3, n_estimators = n_estimators)
 plt.show()
+
 """
 km.run_everything("minmax",True,18)
 km.run_everything("robust",True,18)

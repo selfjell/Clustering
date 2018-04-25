@@ -35,7 +35,6 @@ def run(plotting_, covar, ordered, scaling, seed = 18, index = 1, n_estimators =
 
     np.random.seed(seed)
 
-
     if ordered:
         data_red, pca = reduce(data)
 
