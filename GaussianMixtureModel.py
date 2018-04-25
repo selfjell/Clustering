@@ -68,7 +68,7 @@ class GaussianMixtureModel():
                 temp_data = self.pca.transform(temp_data)
             plt.scatter(temp_data[:, 0], temp_data[:, 1], color=color)
 
-    def run(self, plot = True, test = True, reduce_first = True, reduce_components = 2, scaling_type="standard", model_components = 3, covariance_type="full"):
+    def run(self, plot = True, subplot_ = plt.subplot(111), test = True, reduce_first = True, reduce_components = 2, scaling_type="standard", model_components = 3, covariance_type="full"):
         if(reduce_first):
             self.reduce(reduce_components)
             self.scale(scaling_type)
@@ -76,7 +76,7 @@ class GaussianMixtureModel():
             self.scale(scaling_type)
             self.reduce(reduce_components)
         self.fit(model_components, covariance_type = covariance_type)
-        if plot: self.plot()
+        if plot: self.plot(subplot_ = subplot_)
         if test: self.test()
 
     def test(self):
