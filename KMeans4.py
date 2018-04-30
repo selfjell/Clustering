@@ -171,7 +171,7 @@ def run_everything2(scaler, seed, pca, ordered):
         kmeans = make_kmeans(X_pca)
     else:
         kmeans = make_kmeans(X_Scaled)
-    return test_kmeans2(kmeans, testCluster)
+    test_kmeans(kmeans, testCluster)
 
 
 # new method for KMeans4 testing with TestEverything
@@ -197,3 +197,10 @@ def run_everything3(scaler, seed, pca, ordered):
     np.random.seed(seed)
     kmeans = make_kmeans(X_pca)
     return test_kmeans2(kmeans, testCluster)
+
+
+# Super_Test_KMEANS_Only2comp best results working here.
+run_everything2("standard", 2, True, True)
+run_everything2("robust", 0, True, True)
+run_everything2("norm", 16, True, False)
+run_everything2("minmax", 6, True, False)
