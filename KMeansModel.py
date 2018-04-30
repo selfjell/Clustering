@@ -80,6 +80,7 @@ class KMeansModel():
 
     def reset(self):
         self.processed_data = self.data
+        self.score = 0
 
     def run(self, plot = True, subplot_ = plt.subplot(111), test = True, reduce_first = True, reduce_components = 2, scaling_type = "standard", model_components = 3):
 
@@ -105,6 +106,7 @@ class KMeansModel():
             if labelX == labelY:
                 score += 1
         score = (score/len(self.labels))*100
+        self.score = score
         return score
 
 
