@@ -13,11 +13,12 @@ class GaussianMixtureModel():
         self.processed_data = data
         self.labels = labels
         self.operationsOrder = []
+        self.score = 0
 
     def reduce(self, n_components = 2):
         self.operationsOrder.append("reduce")
         pca = decomposition.PCA(n_components = n_components)
-        pca.fit(self.data)
+        pca.fit(self.processed_data)
         self.processed_data = pca.transform(self.processed_data)
         self.pca = pca
 

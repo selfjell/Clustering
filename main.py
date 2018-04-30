@@ -1,4 +1,4 @@
-from GaussianMixtureModel2 import GaussianMixtureModel
+from GaussianMixtureModel import GaussianMixtureModel
 from KMeansModel import KMeansModel
 import numpy as np
 import matplotlib.pyplot as plt
