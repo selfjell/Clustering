@@ -9,6 +9,7 @@ np.random.seed(18)
 Covariances = ["full", "tied", "spherical", "diag"]
 Scaling_Types = ["standard", "robust", "normalizer", "minmax"]
 KM_top_orders = [False, False, True, True]
+GM_seeds = [18, 8, 12, 8]
 KM_seeds = [2,0,16,6]
 GM_top_orders = [False, False, False, False]
 GM_top_covar = ["diag", "diag", "tied", "diag"]
