@@ -180,5 +180,10 @@ def run3(scaler, seed, pca, ordered, gm_type):
 
 
 def reduce2(data, n_components):
-    pca = decomposition.PCA(n_components=n_components, )
+    pca = decomposition.PCA(n_components=n_components)
     return pca.fit_transform(data)
+
+
+# Test to see that TestEverything gives correct arguments and score correlates.
+print(run3("norm", 12, 2, True, "tied"))
+print(run3("standard", 18, 2, True, "diag"))

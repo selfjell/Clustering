@@ -1,4 +1,4 @@
-from GaussianMixtureModel import GaussianMixtureModel
+from GaussianMixtureModel2 import GaussianMixtureModel
 from KMeansModel import KMeansModel
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,7 +27,7 @@ KM = KMeansModel(data, labels)
 # Gaussian mixture
 index = 0
 for scaling_type in Scaling_Types:
-    np.random.seed(18)
+    np.random.seed(GM_seeds[index])
     GMM.run(subplot_ = plt.subplot(2, 2, index+1), covariance_type = GM_top_covar[index], scaling_type=scaling_type, reduce_first = GM_top_orders[index])
     plt.title("Scaling: {}  Covar: {}  Reduce first: {}\nScore:{}".format(scaling_type, GM_top_covar[index], GM_top_orders[index], GMM.score))
     GMM.reset()

@@ -5,14 +5,14 @@ import test as gm
 scaler_list = ['minmax', 'robust', 'standard', 'norm']
 ordered_list = [True, False]
 # If test with comp 2-7 (files_names_2range_7comp), then range 30 is as good as 100 based on previous test
-seed_list = range(30)
+seed_list = range(50)
 
 # [True, False] = 7and2comp
 # [True] = 2comp_only
 pca_list = [True]
 
 # for testing with all comps
-pca_list2 = [2, 3, 4, 5, 6, 7]
+pca_list2 = [2]
 
 km_results = []
 gm_results = []
@@ -27,9 +27,9 @@ def write_scores(results, km_or_gm):
 
     # argument km_or_gm decides which file to write to
     if km_or_gm == 'km':
-        file = open(file_names_2range7comp[0], "w+")
+        file = open(file_names_2comp[0], "w+")
     else:
-        file = open(file_names_2range7comp[1], "w+")
+        file = open(file_names_2comp[1], "w+")
 
     file.write(km_or_gm + ' - SUPER_TEST')
     file.write('\n')
