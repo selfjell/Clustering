@@ -1,0 +1,4 @@
+To run, run main.py from terminal, dataset must be in same folder as files. 
+The four best parameters for the different scaling methods for each algorithm are displayed.
+Having issues with the normalizer scaler for GMM though.
+We also had significantly better results using 7 or 5 components (around 97%). But this can't be visualized, so we left it out for now.
