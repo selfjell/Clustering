@@ -103,7 +103,7 @@ class KMeansModel():
     def test_kmeans(self):
         score = 0
         for labelX, labelY in zip(self.model.labels_, self.labels):
-            if labelX == labelY:
+            if labelX+1 == labelY:
                 score += 1
         score = (score/len(self.labels))*100
         self.score = score

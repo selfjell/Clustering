@@ -2,6 +2,7 @@ from GaussianMixtureModel import GaussianMixtureModel
 from KMeansModel import KMeansModel
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 ## INIT ##
 np.random.seed(18)
@@ -30,6 +31,7 @@ for scaling_type in Scaling_Types:
     plt.title("Scaling: {}  Covar: {}  Reduce first: {}\nScore:{}".format(scaling_type, GM_top_covar[index], GM_top_orders[index], GMM.score))
     GMM.reset()
     index+=1
+plt.suptitle("Top scoring gaussian mixture models for 2 components")
 plt.show()
 
 # KMeans
@@ -40,4 +42,5 @@ for scaling_type in Scaling_Types:
     plt.title("Scaling: {}     Reduce first: {} Score: {}%".format(scaling_type,KM_top_orders[index],KM.score))
     KM.reset()
     index+=1
+plt.suptitle("Top scoring k-means models for 2 components")
 plt.show()
