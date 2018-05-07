@@ -23,6 +23,7 @@ GMM = GaussianMixtureModel(data, labels)
 KM = KMeansModel(data, labels)
 
 ## RUN ##
+KM.elbow_graph()
 
 # Gaussian mixture
 index = 0
@@ -30,6 +31,7 @@ for scaling_type in Scaling_Types:
     np.random.seed(GM_seeds[index])
     GMM.run(subplot_ = plt.subplot(2, 2, index+1), covariance_type = GM_top_covar[index], scaling_type=scaling_type, reduce_first = GM_top_orders[index])
     plt.title("Scaling: {}  Covar: {}  Reduce first: {}\nScore:{}".format(scaling_type, GM_top_covar[index], GM_top_orders[index], GMM.score))
+    print(GMM.model.score(GMM.processed_data))
     GMM.reset()
     index+=1
 plt.suptitle("Top scoring gaussian mixture models for 2 components")
@@ -41,6 +43,7 @@ for scaling_type in Scaling_Types:
     np.random.seed(KM_seeds[index])
     KM.run(subplot_ = plt.subplot(2, 2, index+1), scaling_type=scaling_type, reduce_first = KM_top_orders[index])
     plt.title("Scaling: {}     Reduce first: {} Score: {}%".format(scaling_type,KM_top_orders[index],KM.score))
+    print(KM.model.score(KM.processed_data))
     KM.reset()
     index+=1
 plt.suptitle("Top scoring k-means models for 2 components")

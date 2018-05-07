@@ -15,9 +15,9 @@ class KMeansModel():
 
     # Used for finding out how many clusters are optimal for a given dataset (X)
     # The optimal number of clusters is the point on the x-axis were the graph cuts off like an elbow
-    def elbow_graph(X):
+    def elbow_graph(self):
         nClusters = range(1, 15)
-        score = elbow_variant1(X, nClusters)
+        score = self.elbow_variant1(self.data, nClusters)
         # score = elbow_variant2(X, nClusters)
         plt.plot(nClusters, score)
         plt.xlabel('Number of Clusters')
@@ -26,7 +26,7 @@ class KMeansModel():
         plt.show()
 
 
-    def elbow_variant1(X, nClusters):
+    def elbow_variant1(self, X, nClusters):
         kmeans = [KMeans(n_clusters=i) for i in nClusters]
         score = [kmeans[i].fit(X).score(X) for i in range(len(kmeans))]
         return score
